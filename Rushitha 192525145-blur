@@ -1,31 +1,17 @@
 import os
 from PIL import Image, ImageFilter  # Imported ImageFilter
-
-# 1. Get the directory where this script is saved
 script_dir = os.path.dirname(__file__)
-
-# 2. Define your image names
 input_filename = "your_image.jpg"  # <-- Change to your actual image name
 output_filename = "blurred_output.jpg"
-
 input_path = os.path.join(script_dir, input_filename)
 output_path = os.path.join(script_dir, output_filename)
-
 try:
-    # 3. Open the image
-    with Image.open(input_path) as img:
-
-        # 4. Apply Gaussian Blur
-        # You can change the radius number. Higher = more blurry!
+        with Image.open(input_path) as img:
         blurred_img = img.filter(ImageFilter.GaussianBlur(radius=5))
-
-        # 5. Save the blurred image
+    
         blurred_img.save(output_path)
         print(f"Success! Blurred image saved as: {output_filename}")
-
-        # 6. Display the blurred image
         blurred_img.show()
-
 except FileNotFoundError:
     print(
         f"Error: Could not find '{input_filename}'. Place it in the same folder as this script."
