@@ -1,30 +1,16 @@
 import os
 from PIL import Image
-
-# 1. Get the directory where this script is saved
-# This prevents "File Not Found" errors in IDLE
 script_dir = os.path.dirname(__file__)
-
-# 2. Define your image names
 input_filename = "image.jpg"  # <-- Change this to your image's actual name!
 output_filename = "grayscale_output.jpg"
-
-# Create full absolute paths
 input_path = os.path.join(script_dir, input_filename)
 output_path = os.path.join(script_dir, output_filename)
-
 try:
-    # 3. Open and convert the image
-    with Image.open(input_path) as img:
+        with Image.open(input_path) as img:
         grayscale_img = img.convert("L")
-
-        # 4. Save the grayscale image
         grayscale_img.save(output_path)
         print(f"Success! Grayscale image saved as: {output_filename}")
-
-        # 5. Open the image using your computer's default photo viewer
         grayscale_img.show()
-
 except FileNotFoundError:
     print(
         f"Error: Could not find '{input_filename}'. Make sure it is in the same folder as this Python script."
