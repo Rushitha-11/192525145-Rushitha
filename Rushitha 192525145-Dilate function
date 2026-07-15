@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
-image = cv2.imread("image.jpg")
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-_, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-kernel = np.ones((5,5), np.uint8)
-dilated = cv2.dilate(binary, kernel, iterations=1)
-cv2.imshow("Original", image)
-cv2.imshow("Binary", binary)
-cv2.imshow("Dilated", dilated)
+img = cv2.imread(r"C:\Users\SAIL\Documents\CV LAB\image.jpg")
+if img is None:
+    print("Error: Image not found. Check the path.")
+    exit()
+kernel = np.ones((5, 5), np.uint8)
+dilated = cv2.dilate(img, kernel, iterations=1)
+cv2.imshow("Original Color Image", img)
+cv2.imshow("Dilated Color Image", dilated)
+cv2.imwrite("color_dilated_image.jpg", dilated)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
