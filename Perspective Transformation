@@ -1,0 +1,26 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg")
+if image is None:
+    print("Error: Could not load image.")
+    exit()
+rows, cols = image.shape[:2]
+pts1 = np.float32([
+    [50, 50],
+    [cols - 50, 50],
+    [50, rows - 50],
+    [cols - 50, rows - 50]
+])
+pts2 = np.float32([
+    [0, 0],
+    [cols, 50],
+    [50, rows],
+    [cols, rows - 50]
+])
+matrix = cv2.getPerspectiveTransform(pts1, pts2)
+result = cv2.warpPerspective(image, matrix, (cols, rows))
+cv2.imshow("Original Image", image)
+cv2.imshow("Perspective Transformed Image", result)
+cv2.imwrite("perspective_output.jpg", result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
