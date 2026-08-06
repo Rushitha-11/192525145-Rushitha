@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+img=cv2.imread("input.jpg")
+if img is None:
+    print("Error: Unable to load image")
+    exit(
+h,w=img.shape[:2]
+src=np.float32([[50,50],[w-50,50],[50,h-50],[w-50,h-50]])
+dst=np.float32([[0,100],[w,0],[100,h],[w-100,h-50]])
+H,status=cv2.findHomography(src,dst)
+result=cv2.warpPerspective(img,H,(w,h))
+cv2.imshow("Original Image",img)
+cv2.imshow("DLT Transformation",result)
+cv2.imwrite("DLT_Output.jpg",result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
