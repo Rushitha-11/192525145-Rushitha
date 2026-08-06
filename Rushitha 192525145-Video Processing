@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 video = cv2.VideoCapture("input.mp4")
 if not video.isOpened():
     print("Error: Cannot open video.")
@@ -6,26 +7,39 @@ if not video.isOpened():
 frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = int(video.get(cv2.CAP_PROP_FPS))
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 output = cv2.VideoWriter(
-    "output.mp4",
-    cv2.VideoWriter_fourcc(*'mp4v'),
+    "perspective_output.mp4",
+    fourcc,
     fps,
-    (frame_width, frame_height),
-    False  # False because output is grayscale
+    (frame_width, frame_height)
 )
-print("Press 'q' to exit.")
+src_points = np.float32([
+    [0, 0],
+    [frame_width - 1, 0],
+    [0, frame_height - 1],
+    [frame_width - 1, frame_height - 1]
+])
+dst_points = np.float32([
+    [100, 50],
+    [frame_width - 100, 0],
+    [50, frame_height - 50],
+    [frame_width - 50, frame_height]
+])
+matrix = cv2.getPerspectiveTransform(src_points, dst_points)
+print("Press 'q' to stop.")
 while True:
     ret, frame = video.read()
     if not ret:
         break
-    resized = cv2.resize(frame, (frame_width, frame_height))
-    gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
-    flipped = cv2.flip(gray, 1)
-    cv2.imshow("Processed Video", flipped)
-    output.write(flipped)
+    transformed = cv2.warpPerspective(frame, matrix, (frame_width, frame_height))
+    cv2.imshow("Original Video", frame)
+    cv2.imshow("Perspective Transformed Video", transformed)
+    output.write(transformed)
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break
 video.release()
 output.release()
 cv2.destroyAllWindows()
-print("Video processing completed successfully.")
+print("Perspective transformation completed successfully.")
+print("Output saved as: perspective_output.mp4")
