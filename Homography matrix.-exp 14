@@ -1,0 +1,28 @@
+import cv2
+import numpy as np
+img = cv2.imread("input.jpg")
+if img is None:
+    print("Error: Image not found!")
+    exit()
+height, width = img.shape[:2]
+src_pts = np.float32([
+    [0, 0],
+    [width - 1, 0],
+    [0, height - 1],
+    [width - 1, height - 1]
+])
+dst_pts = np.float32([
+    [80, 50],
+    [width - 80, 20],
+    [50, height - 40],
+    [width - 50, height - 10]
+])
+H, status = cv2.findHomography(src_pts, dst_pts)
+transformed = cv2.warpPerspective(img, H, (width, height))
+cv2.imshow("Original Image", img)
+cv2.imshow("Homography Transformed Image", transformed)
+cv2.imwrite("homography_output.jpg", transformed)
+print("Transformation completed successfully.")
+print("Output saved as homography_output.jpg")
+cv2.waitKey(0)
+cv2.destroyAllWindows()
