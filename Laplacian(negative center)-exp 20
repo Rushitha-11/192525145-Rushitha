@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+laplacian_mask = np.array([[1,1,1],[1,-8,1],[1,1,1]], dtype=np.float32)
+laplacian = cv2.filter2D(image, cv2.CV_32F, laplacian_mask)
+sharpened = cv2.subtract(image.astype(np.float32), laplacian)
+sharpened = np.clip(sharpened, 0, 255).astype(np.uint8)
+cv2.imwrite("laplacian_sharpened_output.jpg", sharpened)
+cv2.imshow("Original Image", image)
+cv2.imshow("Sharpened Image", sharpened)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'laplacian_sharpened_output.jpg'")
