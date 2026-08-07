@@ -1,0 +1,15 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+blurred = cv2.GaussianBlur(image, (5,5), 0)
+mask = cv2.subtract(image, blurred)
+sharpened = cv2.add(image, mask)
+cv2.imwrite("unsharp_masking_output.jpg", sharpened)
+cv2.imshow("Original Image", image)
+cv2.imshow("Unsharp Masking Sharpened Image", sharpened)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'unsharp_masking_output.jpg'")
