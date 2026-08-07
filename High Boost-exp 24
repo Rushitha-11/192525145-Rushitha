@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+A = 2
+mask = np.array([[-1,-1,-1],[-1,A+8,-1],[-1,-1,-1]], dtype=np.float32)
+high_boost = cv2.filter2D(image, cv2.CV_32F, mask)
+high_boost = np.clip(high_boost, 0, 255).astype(np.uint8)
+cv2.imwrite("high_boost_output.jpg", high_boost)
+cv2.imshow("Original Image", image)
+cv2.imshow("High Boost Sharpened Image", high_boost)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'high_boost_output.jpg'")
