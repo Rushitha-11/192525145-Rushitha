@@ -1,0 +1,13 @@
+import cv2
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+sobel_xy = cv2.Sobel(image, cv2.CV_64F, 1, 1, ksize=3)
+sobel_xy = cv2.convertScaleAbs(sobel_xy)
+cv2.imwrite("sobel_xy_output.jpg", sobel_xy)
+cv2.imshow("Original Image", image)
+cv2.imshow("Sobel XY Edge Detection", sobel_xy)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'sobel_xy_output.jpg'")
