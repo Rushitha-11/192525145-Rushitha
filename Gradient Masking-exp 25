@@ -1,0 +1,17 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+sobel_x = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=3)
+sobel_y = cv2.Sobel(image, cv2.CV_64F, 0, 1, ksize=3)
+gradient = cv2.magnitude(sobel_x, sobel_y)
+gradient = cv2.convertScaleAbs(gradient)
+sharpened = cv2.add(image, gradient)
+cv2.imwrite("gradient_masking_output.jpg", sharpened)
+cv2.imshow("Original Image", image)
+cv2.imshow("Gradient Mask Sharpened Image", sharpened)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'gradient_masking_output.jpg'")
