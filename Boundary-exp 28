@@ -1,0 +1,15 @@
+import cv2
+import numpy as np
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+if image is None:
+    print("Error: Unable to load image.")
+    exit()
+kernel = np.array([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]], dtype=np.float32)
+boundary = cv2.filter2D(image, cv2.CV_64F, kernel)
+boundary = cv2.convertScaleAbs(boundary)
+cv2.imwrite("boundary_output.jpg", boundary)
+cv2.imshow("Original Image", image)
+cv2.imshow("Boundary Detection", boundary)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print("Output saved as 'boundary_output.jpg'")
